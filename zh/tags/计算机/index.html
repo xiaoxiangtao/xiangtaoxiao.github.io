@@ -17,7 +17,12 @@ Tactic 1: Use delimiters to clearly indicate distinct parts of the input
 分隔符（如 ```、"""、—、&lt;>）能帮助模型识别输入的不同部分，避免混淆。这在处理包含多段文本或代码的任务时尤为重要。
 Tactic 2: Ask for a structured output
 要求结构化输出（如JSON、HTML、Markdown表格）便于后续程序处理，是构建AI应用的最佳实践。
-...</p></div><footer class=entry-footer><span title='2026-03-12 00:00:00 +0000 UTC'>2026年3月12日</span>&nbsp;·&nbsp;<span>Xiao Xiangtao</span></footer><a class=entry-link aria-label="post link to Prompt Engineering" href=https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-prompt-engineering/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>RAG (Retrieval-Augmented Generation)</h2></header><div class=entry-content><p>RAG RAG (Retrieval-Augmented Generation) 是一种结合信息检索与文本生成的AI架构，通过检索外部知识库来增强LLM的回答能力。
+Tactic 3: Ask the model to check whether conditions are satisfied
+让模型先验证条件再执行任务，可以减少错误输出。
+Tactic 4: “Few-shot” prompting - give examples
+Few-shot prompting通过提供少量示例来引导模型理解任务格式和期望输出。
+经典论文：
+Brown, T. B., et al. (2020). “Language Models are Few-Shot Learners.” NeurIPS. [论文链接] - 首次提出few-shot learning概念 Min, S., et al. (2022). “Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?” EMNLP. [论文链接] ...</p></div><footer class=entry-footer><span title='2026-03-12 00:00:00 +0000 UTC'>2026年3月12日</span>&nbsp;·&nbsp;<span>Xiao Xiangtao</span></footer><a class=entry-link aria-label="post link to Prompt Engineering" href=https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-prompt-engineering/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>RAG (Retrieval-Augmented Generation)</h2></header><div class=entry-content><p>RAG RAG (Retrieval-Augmented Generation) 是一种结合信息检索与文本生成的AI架构，通过检索外部知识库来增强LLM的回答能力。
 经典论文：
 Lewis, P., et al. (2020). “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.” NeurIPS. [论文链接] - RAG开山之作 Guu, K., et al. (2020). “REALM: Retrieval-Augmented Language Model Pre-Training.” ICML. [论文链接] Izacard, G., & Grave, É. (2021). “Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering.” EACL. [论文链接] - RAG的另一种实现 1. Context Window（上下文窗口） 概念 Context Window 指的是 大语言模型在一次推理时能够读取和理解的最大文本长度。
 经典论文：

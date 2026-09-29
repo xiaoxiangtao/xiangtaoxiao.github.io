@@ -16,4 +16,19 @@
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Tactic 2: Ask for a structured output&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;要求结构化输出（如JSON、HTML、Markdown表格）便于后续程序处理，是构建AI应用的最佳实践。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;要求结构化输出（如JSON、HTML、Markdown表格）便于后续程序处理，是构建AI应用的最佳实践。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Tactic 3: Ask the model to check whether conditions are satisfied&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;让模型先验证条件再执行任务，可以减少错误输出。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Tactic 4: &amp;ldquo;Few-shot&amp;rdquo; prompting - give examples&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Few-shot prompting通过提供少量示例来引导模型理解任务格式和期望输出。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;经典论文：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Brown, T. B., et al. (2020). &amp;ldquo;Language Models are Few-Shot Learners.&amp;rdquo; NeurIPS. [&lt;a href="https://arxiv.org/abs/2005.14165"&gt;论文链接&lt;/a&gt;] - 首次提出few-shot learning概念&lt;/li&gt;
+&lt;li&gt;Min, S., et al. (2022). &amp;ldquo;Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?&amp;rdquo; EMNLP. [&lt;a href="https://arxiv.org/abs/2202.12837"&gt;论文链接&lt;/a&gt;]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
