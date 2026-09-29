@@ -1231,7 +1231,7 @@
 &lt;li&gt;&lt;strong&gt;我现在在做什么&lt;/strong&gt;：动手做桌面学习助手、课程转写与笔记工作流，用同样的输入比较不同模型，看看实际用起来效果如何。学到的东西也会整理在这个站上——&lt;a href="https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-ai-agent/"&gt;AI Agent&lt;/a&gt;、&lt;a href="https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-rag/"&gt;RAG&lt;/a&gt;、&lt;a href="https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-prompt-engineering/"&gt;提示词工程&lt;/a&gt;、&lt;a href="https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-transformer/"&gt;Transformer&lt;/a&gt;。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="ai-项目"&gt;AI 项目&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;DesktopPet 与 NTU-Learn Downloader&lt;/strong&gt; · 独立项目 · 2026 年 9 月&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://www.xiaoxiangtao.cn/zh/posts/desktop-pet/"&gt;DesktopPet&lt;/a&gt; 与 NTU-Learn Downloader&lt;/strong&gt; · 独立项目 · 2026 年 9 月&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;用 AI coding agent 协作做了两个现在上课、听讲座时会用的工具：一只支持对话、查词和实时字幕的桌面宠物，以及课程录像转写与双语字幕工作流。课后再把录音整理成学习笔记。&lt;/li&gt;
 &lt;li&gt;用真实课程录音对比语音识别和翻译模型，权衡术语、可读性、处理耗时与内存占用，分别为实时字幕和课后更准确的转写选择方案。&lt;/li&gt;
