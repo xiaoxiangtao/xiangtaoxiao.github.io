@@ -15,61 +15,7 @@
 &lt;p&gt;在扣子上直接部署后可能是api的原因，生成环境语音识别功能没有跑通，但是在测试环境实现了完整的功能。&lt;/p&gt;
 &lt;p&gt;整个过程大概用了两个小时，修复bug的过程比较顺畅，会进行自测基本功能问题提了都可以修复。但是涉及到接口调用，环境部署等导致的问题时，修复bug的技术要求就直线上升了，需要你能够发现比较具体的问题并准确描述，否则的话只是基于前端的报错，AI可能无法定位到准确问题，对无开发背景的人来说还是有难度。&lt;/p&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/preliminary-experience-generate-an-ielts-speaking-practice-webpage-using-buttons/2026012815044317-designaxt-1024x183.png"&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/preliminary-experience-generate-an-ielts-speaking-practice-webpage-using-buttons/2026012815041617-designaxt-1024x991.png"&gt;&lt;/p&gt;</description></item><item><title>bitwarden_rs+nginx反向代理配置记录</title><link>https://www.xiaoxiangtao.cn/zh/posts/bitwarden_-rs-nginx-reverse-proxy-configuration-record/</link><pubDate>Wed, 10 Mar 2021 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/bitwarden_-rs-nginx-reverse-proxy-configuration-record/</guid><description>&lt;p&gt;bitwarden是一个开源的密码管理器，可以部署在私有服务器上。官方的bitwarden对服务器配置要求较高，网友开发了bitwardenrs适用于小用户，对配置要求低不怎么占内存。本次采用安装docker后在docker上安装bitwardenrs和nginx，通过nginx反向代理实现HTTPS加密访问bitwarden的方法。&lt;/p&gt;
-&lt;p&gt;服务器配置：Tencent Hong Kong centOS 7.6 1C1G 25GSSD 30M峰值带宽&lt;/p&gt;
-&lt;p&gt;服务器上已经运行bitnami wordpress堆栈，因此80和443端口都被apache占用，挂了个人博客。网络上大部分blog都采用nginx做反向代理，由于不懂技术因此也用nginx照做。&lt;/p&gt;
-&lt;h3 id="安装docker"&gt;安装Docker&lt;/h3&gt;
-&lt;p&gt;docker是一个虚拟机，他打包了多个不同主流应用，可以很方便的安装这些应用，并且每个应用都是以容器的形式存在，与宿主机的环境是隔离的，这些应用的配置与运行可以干净的删除不会对宿主机造成影响。&lt;/p&gt;
-&lt;p&gt;docker中有images 镜像和container 容器，比如我可以在宿主机下载一个nginx镜像，然后我制作两个容器：nginx_1 和 nginx_2，两个容器中都可以通过镜像安装nginx应用，两个nginx是分开的，可以各自用于不同用途，方便管理。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;yum install -y docker #安装docker
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;systemctl docker #启动docker
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="安装bitwarden_rs"&gt;安装bitwarden_rs&lt;/h3&gt;
-&lt;p&gt;docker有几个需要事先理解的概念，比如 &lt;strong&gt;目录映射&lt;/strong&gt;。我们可以让容器的目录去映射一个宿主机的目录，简单来讲就是用一个宿主机的目录当做容器应用的目录，这样要修改应用配置或者上传文件只要动宿主机的目录就可以。&lt;/p&gt;
-&lt;p&gt;我们在run 应用的时候添加以下形式的配置：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-v /library:/library #&amp;#39;:&amp;#39;前是要映射的宿主机目录，后面是容器应用的实际目录
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;端口映射&lt;/strong&gt;：容器是一个虚拟环境，比如nginx监听的80和443端口，在我的宿主机中这两个端口被Apache占用了，因此我可以分配另外两个端口与容器的80端口和443端口进行映射。&lt;/p&gt;
-&lt;p&gt;这样一来避免了端口冲突，比如访问//domain:4444实际上就会通过容器的443端口被nginx监听到。需要注意的是通过这种方式要在防火墙打开4444端口，否则浏览器还是无法访问的。&lt;/p&gt;
-&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/bitwarden_-rs-nginx-reverse-proxy-configuration-record/%E5%9B%BE%E7%89%87-1024x227.png"&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-p 8088:80/tcp 4444:443/tcp #8088映射到80 4444映射到443 映射端口根据需要选择空闲端口即可
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /data/bitwarden #建立宿主机映射目录
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker run -d \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --rm \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --name bitwarden \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -p 8085:80 \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -p 3012:3012 \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -e SIGNUPS_ALLOWED=true \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -e WEB_VAULT_ENABLED=true \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -e DOMAIN=//mydomain.cn \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -v /data/bitwarden:/data \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; bitwardenrs/server:latest
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;上面命令的各个参数含义如下：
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-d 在后台运行
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;--rm 容器停止运行后，自动删除容器文件
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;--name bitwarden容器的名字为bitwarden
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-p 8085:80 容器的端口80映射到8085，在Nginx配置
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-p 3012:3012 容器的端口3012映射到3012
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-e SIGNUPS_ALLOWED=true 设置环境变量SIGNUPS_ALLOWED=true允许用户注册
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-e WBE_VAULT_ENABLE=true 设置环境变量WBE_VAULT_ENABLE=true
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-e DOMAIN=//mydomain.cn设置域名,需要替换成自己申请的域名
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-v /data/bitwarden:/data 容器的/data/目录映射到宿主机的/data/bitwarden目录
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="安装nginx"&gt;安装nginx&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /data/nginx #建立宿主机映射目录
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# 安装nginx
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker run \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --rm \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --name nginx \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -d \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -p 8088:80/tcp \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -p 2443:443/tcp \
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; nginx
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# 由于不知道nginx目录下的内容，我们将容器的目录复制到宿主机目录/data下
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker cp nginx:/etc/nginx /data
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# 创建用于存放ssl证书的文件夹，将申请到的.cert和.key证书文件上传到这个文件夹
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /data/nginx/certs
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改/data/nginx/conf.d/default.conf文件添加以下内容，启用https访问并对bitwarden进行反向代理&lt;/p&gt;</description></item><item><title>wordpress配置问题记录</title><link>https://www.xiaoxiangtao.cn/zh/posts/wordpress-configuration-problem-record/</link><pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/wordpress-configuration-problem-record/</guid><description>&lt;h2 id="linux基本语法"&gt;Linux基本语法&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/preliminary-experience-generate-an-ielts-speaking-practice-webpage-using-buttons/2026012815041617-designaxt-1024x991.png"&gt;&lt;/p&gt;</description></item><item><title>wordpress配置问题记录</title><link>https://www.xiaoxiangtao.cn/zh/posts/wordpress-configuration-problem-record/</link><pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/wordpress-configuration-problem-record/</guid><description>&lt;h2 id="linux基本语法"&gt;Linux基本语法&lt;/h2&gt;
 &lt;p&gt;复制 cp 要复制的文件路径 目标路径 cp -r 递归复制整个目录&lt;/p&gt;
 &lt;p&gt;删除 rm -f 强制删除 -r 递归删除目录&lt;/p&gt;
 &lt;p&gt;改名 mv 原文件 新文件名&lt;/p&gt;
@@ -86,7 +32,48 @@
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo chmod g+w /YOURADRESS/apps/wordpress/htdocs/wp-config.php
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;之后禁用插件并重新激活即可。完事以后要将文件权限复原，执行：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo chmod g-w /YOURADRESS/apps/wordpress/htdocs/wp-config.php
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;更多内容，在bitnami.com官方文档的trouble shooting部分有详细介绍。&lt;/p&gt;</description></item><item><title>UEditor部署到个人站点</title><link>https://www.xiaoxiangtao.cn/zh/posts/ueditorbushudaogerenzhandian/</link><pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/ueditorbushudaogerenzhandian/</guid><description>&lt;h2 id="一下载ueditor"&gt;一、下载UEditor&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;更多内容，在bitnami.com官方文档的trouble shooting部分有详细介绍。&lt;/p&gt;</description></item><item><title>NameSilo Web hosting 云主机建站服务购买与使用体验</title><link>https://www.xiaoxiangtao.cn/zh/posts/namesilo-web-hosting-virtual-machine-station-building/</link><pubDate>Mon, 25 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/namesilo-web-hosting-virtual-machine-station-building/</guid><description>&lt;p&gt;namesilo的域名在众多服务商里价格是比较实惠的，.com域名只要$8.99，近年新推出了web hosting服务，价格也比较实惠，最便宜的一个网站20G存储空间的套餐每月只要$2.39元（年套餐）。最近有一个做网站的需求，腾讯的学生优惠已经用过了，又不想备案，正好找到这个便宜的尝试一下。&lt;/p&gt;
+&lt;h2 id="购买"&gt;购买&lt;/h2&gt;
+&lt;p&gt;namesilo的hosting购买服务在namesilo新版网站，进入 &lt;a href="https://www.xiaoxiangtao.cn/zh/"&gt;namesilo.com&lt;/a&gt; 首页就能看见&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87.png"&gt;&lt;/p&gt;
+&lt;p&gt;总共有3个套餐，可以按年或者按月购买，按年购买会更便宜。购买过程非常简单，选择对应套餐点击Get Started。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-1-1024x554.png"&gt;&lt;/p&gt;
+&lt;p&gt;然后会让你选择域名，这一步也提供3种选择：&lt;/p&gt;
+&lt;p&gt;1.如果你没有域名的话，可以直接搜索选择一个可注册的，然后和云主机套餐打包在namesilo购买；&lt;/p&gt;
+&lt;p&gt;2.如果你在其他注册商处（比如腾讯云等）已经购买了域名，输入你购买的域名进行绑定即可，注意要输入你希望是主网站的域名比如www.test.com，namesilo会自动增加域名解析；&lt;/p&gt;
+&lt;p&gt;3.你也可以选择将其他注册商处购买的域名转移至namesilo（不过注意如果你是新购买的域名通常有一个期限限制域名转出）。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-2-1024x451.png"&gt;&lt;/p&gt;
+&lt;p&gt;我选择了绑定我在腾讯云购买的域名，选择好域名后点击continue即跳转到确认订单页面（注意：确认订单页面在旧版网站，新旧网站功能混在一起确实比较容易让人迷惑），不用犹豫点击确认订单，然后在付款页面选择Alipay，输入你的支付宝账号然后扫二维码付款即可。&lt;/p&gt;
+&lt;h2 id="域名解析"&gt;域名解析&lt;/h2&gt;
+&lt;p&gt;！！！购买完成以后，在新版网站是找不到你购买的host的，这点很让人迷惑，在新版网站，你可以选择点击自己的账户信息来跳转到旧版网站，然后在侧边栏选择hosting manager，即可进入主机管理页面，在这里你会看到自己购买的主机，名称就是你之前绑定的域名。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-3.png"&gt;&lt;/p&gt;
+&lt;p&gt;点击链接图标，就进入了你的主机的cpanel管理面板。第一次登陆要设置账号密码邮箱配置等，cpanel支持中文（在偏好-更改语言处选择语言），可视化界面简单易懂，网上已经有很多介绍。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-4.png"&gt;&lt;/p&gt;
+&lt;p&gt;购买完成后就可以前往控制面板进行相关设置了，namesilo根据你在购买时绑定的域名已经自动为该域名添加了域名解析，包括test.com,www.test.com,ftp.test.com以及mail解析等，如果购买套餐时你选择在namesilo购买一个新域名，那么一切已经就绪，在cpanel面板选择安装wordpress即可开始建站。如果像我一样绑定了其他注册商处的域名，虽然namesilo已经添加了相关解析，但这些解析是基于namesilo自家DNS服务器才会生效的，这里有两种选择：&lt;/p&gt;
+&lt;p&gt;1.到购买域名的域名注册商处将域名的DNS解析服务器地址改为namesilo的DNS服务器地址使解析生效：&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-5.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;NS1.DNSOWL.COM&lt;/li&gt;
+&lt;li&gt;NS2.DNSOWL.COM&lt;/li&gt;
+&lt;li&gt;NS3.DNSOWL.COM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2.如果不希望更换DNS服务商，在cpanel面板的域名Zone找到自动添加的所有域名解析，然后将他们全部复制添加到自己的域名注册商处的域名解析中，同样可以让解析生效。&lt;/p&gt;
+&lt;p&gt;做完这些，在cpanel面板安装好wordpress，在浏览器输入你的域名就可以看到wordpress主页了！&lt;/p&gt;
+&lt;h2 id="ssl证书实现https"&gt;SSL证书实现HTTPS&lt;/h2&gt;
+&lt;p&gt;购买的主机已经添加了自签名的SSL证书，但是自签名证书在用浏览器访问时会报不安全，一个第三方签名还是有必要的，namesilo自家在已购主机管理页面就有SSL证书购买服务，不过要花钱，有很多免费提供签名的第三方机构，我直接申请了腾讯云提供的TrustAsia 1年期免费证书（在云产品-SSL证书处申请即可）。&lt;/p&gt;
+&lt;p&gt;申请下来后下载证书得到.key及.crt证书文件（host使用的是apache服务器，要选对版本），找到cpanel面板的：安全-SSL/TLS选项，删除已有自签名证书文件，上传自己的证书文件，然后选择[管理SSL主机]，选择证书对应的域名，点击按域自动填充，上传的证书会被自动选中填充，点击安装证书即可。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-6.png"&gt;&lt;/p&gt;
+&lt;p&gt;在cpanel面板的：域-域选项找到自己的域名，选择启用Force HTTPS Redirect，至此，网站即可安全的用HTTPS进行访问了。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-7-1024x94.png"&gt;&lt;/p&gt;
+&lt;h2 id="cloudflare-cdn加速"&gt;CloudFlare CDN加速&lt;/h2&gt;
+&lt;p&gt;在cpanel安装好wordpress后，就是进入wordpress后台搭建网站，但是实测在中国境内网页的访问速度很慢，并且容易丢包。为了提高访问速度，需要将网页进行静态缓存以及CDN加速。&lt;/p&gt;
+&lt;p&gt;类似七牛云等国内免费CDN服务要求你的主域名是备案了的，没有备案要选择海外CDN， &lt;a href="https://www.xiaoxiangtao.cn/zh/"&gt;CloudFlare&lt;/a&gt; 提供个人免费版CDN加速服务，推荐这个 &lt;a href="//zhuanlan.zhihu.com/p/29891330"&gt;教程&lt;/a&gt;，注意登录cloudflare的外国官网，中国网站注册是企业版的，注册完就有客服打电话给你谈业务了&amp;hellip;CloudFlare的CDN需要将DNS服务器地址转成他们家的，生效时间大概十分钟不到。&lt;/p&gt;
+&lt;p&gt;在wordpress安装一个静态缓存插件，比如wp fast cache，在CDN选项选择cloudflare，需要输入API码，然后在cloudflare的Overview的侧边栏点击get your API token，选择global API，点击view，复制API代码到wordpress中即可，一路点击确认，cdn配置就完成了。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://www.xiaoxiangtao.cn/posts/namesilo-web-hosting-virtual-machine-station-building/%E5%9B%BE%E7%89%87-8.png"&gt;&lt;/p&gt;
+&lt;p&gt;配置CDN及静态缓存后，网站的访问速度得到很明显的改善，访问变的更稳定，虽然相较国内的网站速度稍慢，但是对于像个人博客之类的小网站完全可以接受了。&lt;/p&gt;
+&lt;h2 id="邮箱"&gt;邮箱&lt;/h2&gt;
+&lt;p&gt;namesilo的host已经配置好了邮箱服务，发送邮件没问题，但是我用163发的邮件它却收不到，在wordpress设置中更换邮件地址，发现验证邮件也发不到我的邮箱上。因此使用了第三方的SMTP服务，下载了wp SMTP mail插件，SMTP服务用的是腾讯云的企业邮。&lt;/p&gt;
+&lt;p&gt;将原本的地址解析中的邮件地址解析删掉，添加腾讯企业邮的地址进去，就可以使用腾讯企业邮箱的服务了，方法很简单，注册一个腾讯企业邮箱账号（免费的），然后按指导设置完成即可。增加一个业务邮箱账号，比如mail@designaxt.com，然后得到对应的邮箱密匙，在wp SMTP mail选择其他SMTP，输入密匙，腾讯企业邮的服务器地址及端口号，保存更改就可以用腾讯的服务发邮件了，其他家应该类似。&lt;/p&gt;</description></item><item><title>UEditor部署到个人站点</title><link>https://www.xiaoxiangtao.cn/zh/posts/ueditorbushudaogerenzhandian/</link><pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/ueditorbushudaogerenzhandian/</guid><description>&lt;h2 id="一下载ueditor"&gt;一、下载UEditor&lt;/h2&gt;
 &lt;p&gt;&lt;a href="//ueditor.baidu.com/website/download.html"&gt;//ueditor.baidu.com/website/download.html&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;在以上链接下载，选择自己需要的语言版本，我用的是jsp，就下载jsp版本。将下载的压缩包解压，可以直接将解压的文件导入到Eclipse中自己的项目中，导入到文件夹WebContent中即可。&lt;/p&gt;
 &lt;h2 id="二配置"&gt;二、配置&lt;/h2&gt;

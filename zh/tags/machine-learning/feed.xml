@@ -1,31 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Machine-Learning on Xiangtao's log</title><link>https://www.xiaoxiangtao.cn/zh/tags/machine-learning/</link><description>Recent content in Machine-Learning on Xiangtao's log</description><generator>Hugo</generator><language>zh-Hans</language><managingEditor>15989119660@163.com (Xiangtao XIAO)</managingEditor><webMaster>15989119660@163.com (Xiangtao XIAO)</webMaster><lastBuildDate>Sat, 11 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://www.xiaoxiangtao.cn/zh/tags/machine-learning/feed.xml" rel="self" type="application/rss+xml"/><item><title>OpenClaw部署与应用</title><link>https://www.xiaoxiangtao.cn/zh/posts/openclaw-deployment-and-application/</link><pubDate>Sat, 11 Apr 2026 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/openclaw-deployment-and-application/</guid><description>&lt;p&gt;&lt;a href="https://docs.openclaw.ai/concepts/multi-agent"&gt;https://docs.openclaw.ai/&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id="openclaw部署"&gt;OpenClaw部署&lt;/h1&gt;
-&lt;h2 id="服务器与系统环境"&gt;服务器与系统环境&lt;/h2&gt;
-&lt;p&gt;腾讯云轻量应用服务器 4核CPU，4GB内存，70G系统盘&lt;/p&gt;
-&lt;p&gt;ubuntu 22.04.5 LTS 64bit，根据chatGPT推荐兼容性最好&lt;/p&gt;
-&lt;h2 id="安装openclaw"&gt;安装OpenClaw&lt;/h2&gt;
-&lt;h3 id="更新系统并下载依赖"&gt;更新系统并下载依赖&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 更新系统&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装基础依赖&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt install -y git curl wget unzip build-essential
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装nvm&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh &lt;span class="p"&gt;|&lt;/span&gt; bash
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;source&lt;/span&gt; ~/.bashrc
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装node.js&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;nvm install --lts
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;nvm use --lts
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 验证安装成功，查看版本号&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;node -v
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;npm -v
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="下载openclaw"&gt;下载OpenClaw&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;npm install -g openclaw@latest
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="启动openclaw"&gt;启动OpenClaw&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 初始化配置并安装&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw onboard --install-daemon
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# install-daemon 自动将 OpenClaw 的 Gateway 服务安装为后台守护进程，静默运行，&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 开机自动启动及崩溃自动重启&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;from chatGPT&lt;/p&gt;</description></item><item><title>AI Agent（从 Chatbot 到生产级 Agent）</title><link>https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-ai-agent/</link><pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-ai-agent/</guid><description>&lt;h1 id="ai-agent从-chatbot-到生产级-agent"&gt;AI Agent（从 Chatbot 到生产级 Agent）&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Machine-Learning on Xiangtao's log</title><link>https://www.xiaoxiangtao.cn/zh/tags/machine-learning/</link><description>Recent content in Machine-Learning on Xiangtao's log</description><generator>Hugo</generator><language>zh-Hans</language><managingEditor>15989119660@163.com (Xiangtao XIAO)</managingEditor><webMaster>15989119660@163.com (Xiangtao XIAO)</webMaster><lastBuildDate>Sat, 14 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://www.xiaoxiangtao.cn/zh/tags/machine-learning/feed.xml" rel="self" type="application/rss+xml"/><item><title>AI Agent（从 Chatbot 到生产级 Agent）</title><link>https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-ai-agent/</link><pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-ai-agent/</guid><description>&lt;h1 id="ai-agent从-chatbot-到生产级-agent"&gt;AI Agent（从 Chatbot 到生产级 Agent）&lt;/h1&gt;
 &lt;p&gt;AI Agent是LLM应用的高级形态，能够自主规划、执行任务并与环境交互。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;经典论文：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -93,7 +66,43 @@
 &lt;ul&gt;
 &lt;li&gt;Dai, Z., et al. (2019). &amp;ldquo;Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context.&amp;rdquo; ACL. [&lt;a href="https://arxiv.org/abs/1901.02860"&gt;论文链接&lt;/a&gt;] - 突破固定上下文长度的开创性工作&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;通常包含：&lt;/p&gt;</description></item><item><title>Transformer概念与理解</title><link>https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-transformer/</link><pubDate>Fri, 20 Feb 2026 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-transformer/</guid><description>Transformer模型彻底改变了自然语言处理领域，成为现代大语言模型的基石。本文从产品视角深入解析Transformer的核心概念。</description></item><item><title>NLP分类效果衡量指标(F1/p/r)</title><link>https://www.xiaoxiangtao.cn/zh/posts/nlp-classification-effect-measurement-index-f1-p-r/</link><pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/nlp-classification-effect-measurement-index-f1-p-r/</guid><description>&lt;h2 id="概念"&gt;概念&lt;/h2&gt;
+&lt;p&gt;通常包含：&lt;/p&gt;</description></item><item><title>Transformer概念与理解</title><link>https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-transformer/</link><pubDate>Fri, 20 Feb 2026 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/learning-notes-of-transformer/</guid><description>Transformer模型彻底改变了自然语言处理领域，成为现代大语言模型的基石。本文从产品视角深入解析Transformer的核心概念。</description></item><item><title>Gensim训练词向量与Embedding相关知识</title><link>https://www.xiaoxiangtao.cn/zh/posts/gensim-training-word-vector-and-embedding-related-knowledge/</link><pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/gensim-training-word-vector-and-embedding-related-knowledge/</guid><description>&lt;p&gt;在进行文本分类的时候，预处理我们可以自己做一个词向量模型，也可以采用预训练的模型。采用预训练的模型比如谷歌基于goole news训练的Word2vec模型，由于在大量文本数据中训练过，所以词的概率分布会比较准确，当自己的数据集比较小的时候，用预训练数据有利于提升模型的准确度。&lt;/p&gt;
+&lt;p&gt;以下内容使用了tensorflow。&lt;/p&gt;
+&lt;h2 id="训练文本生成word2vec模型"&gt;训练文本生成word2vec模型&lt;/h2&gt;
+&lt;p&gt;自己训练模型一般有以下几步：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;处理数据集，首先gensim的Word2Vec()方法需要的输入是句子顺序的单词，比如 我 爱 你 而不是我爱你，所以要将文本数据分词处理，在这个过程中，我们可以去除停用词，英文全部小写，语法统一等处理，可能对词向量的训练比较有帮助。&lt;/li&gt;
+&lt;li&gt;完成文本的处理以后，我们得到一个分词后的文本数据集，比如一个列表[&amp;lsquo;she&amp;rsquo;, &amp;lsquo;is&amp;rsquo;, &amp;lsquo;beautiful&amp;rsquo;]，在gensim模块中可以简单的使用model=gensim.models.word2vec.Word2Vec()得到训练的模型。&lt;br&gt;
+该方法有一些参数：&lt;br&gt;
+&lt;strong&gt;sentences&lt;/strong&gt;-即数据集；sg-设置训练算法，0代表CBOW，1代表skip-gram算法；&lt;br&gt;
+&lt;strong&gt;size&lt;/strong&gt;-指特征向量的维度，默认为100，大的size需要更多数据，效果更好，但是过大则浪费资源，效果提升不明显；&lt;br&gt;
+&lt;strong&gt;window&lt;/strong&gt;-当前词与预测词在一个句子中的最大距离，默认是5，比如 我 今天 成功 完成 工作，对于 成功，如果设置窗口为2，可能去预测的词就是我 今天 完成 和 工作，注意是最大值而不是一定选取四个词。最后模型输出的是一个概率分布，即一个词出现在其他词边的概率是多少，我们也就可以据此去发现相似的词。&lt;br&gt;
+&lt;strong&gt;min_count&lt;/strong&gt;-去除词频小于min_count的词；&lt;br&gt;
+&lt;strong&gt;hs&lt;/strong&gt;-1采用hierarchy softmax，0采用negative sample；&lt;br&gt;
+&lt;strong&gt;iter&lt;/strong&gt;-迭代次数&lt;br&gt;
+&lt;strong&gt;workers&lt;/strong&gt;-参数控制训练的并行数¨C9C    更多参考： &lt;a href="//www.cnblogs.com/kjkj/p/9825418.html"&gt;//www.cnblogs.com/kjkj/p/9825418.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其他训练词向量有相似的方法和思路，网上有很多资料。&lt;/p&gt;
+&lt;h2 id="使用预训练词向量"&gt;使用预训练词向量&lt;/h2&gt;
+&lt;p&gt;首先加载获取到准备好的模型，然后我们的目标是得到一个embedding_metrics即词向量矩阵，词向量矩阵的shape为（vocab_size, embedding_dim），它是我们要用于训练的数据的每个词（更具体的说是词表中的词）在训练好的模型中的词向量组成的矩阵。&lt;/p&gt;
+&lt;p&gt;接下来处理训练数据，即用tokenizer处理训练后的数据得到词表，然后将每条文本数据转变为用词表索引数字代替各单词表示的列表，这里给词编码的顺序是词频由高到低，再进行padding使句子输入变为定长，最后我们利用word_index和模型生成embedding_metrics，数据的准备就基本完成了。这些步骤使用tensorflow提供的api可以很简单的实现。&lt;/p&gt;
+&lt;p&gt;生成代码及相关解释如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;embedding_matrix&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word_index&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;word2vec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vector_size&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#  len(word_index) + 1，加1是因为word_index的标记是从1开始而非0，这样词索引与词向量刚好对应，并且对于padding后为&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#  0的填充位置可以有对应的映射。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;word_index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;        &lt;span class="n"&gt;embedding_vector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;word2vec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getitem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;        &lt;span class="n"&gt;embedding_matrix&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;embedding_vector&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;KeyError&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;vector not found for word - &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="embedding层做了什么"&gt;Embedding层做了什么？&lt;/h2&gt;
+&lt;p&gt;Embedding层就是以one hot为输入、中间层节点为词向量维数的全连接层！而这个全连接层的参数，就是一个“词向量表”即我们的embedding_metrics，也就是说，其实onehot的作用就是查表，选择onehot表示的词对应的词向量，然后输出到下一层去。如果我们不用预处理的词向量，就是放一个空矩阵在embedding层（或者说是随机初始化参数），然后在训练网络过程中更新参数。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;Embedding&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vocab&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;embedding_dim&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;input_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;embedding_matrix&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;trainable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# (len(vocab) + 1, embedding_dim)与embedding_matrix的shape是一致的。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;参考：&lt;/p&gt;</description></item><item><title>NLP分类效果衡量指标(F1/p/r)</title><link>https://www.xiaoxiangtao.cn/zh/posts/nlp-classification-effect-measurement-index-f1-p-r/</link><pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/nlp-classification-effect-measurement-index-f1-p-r/</guid><description>&lt;h2 id="概念"&gt;概念&lt;/h2&gt;
 &lt;p&gt;为什么要计算F1：避免样本分布带来的偏差，综合考量分类效果，假如有100个样本，其中1个正样本，99个负样本，如果模型的预测只输出0，那么正确率是99%，这时候用正确率来衡量模型的好坏显然是不对的。&lt;/p&gt;
 &lt;p&gt;真实 1真实 0预测 1True Positive(TP)False Positive(FP)预测 0False Negative(FN)True Negative(TN)&lt;/p&gt;
 &lt;ul&gt;
@@ -172,7 +181,27 @@
 &lt;/ol&gt;
 &lt;h2 id="多标签分类算法"&gt;多标签分类算法&lt;/h2&gt;
 &lt;p&gt;对于神经网络，简单的做法是在最后输出层使用sigmoid激活函数，输出数目为类别数，每个输出都是一个概率，注意输出的多个类别的概率总和不再是1，因为是多标签问题，然后损失函数用binary_crossentrophy，相当于对每个输出分别判断属不属于该类，从而使每一个可能属于的类的概率都趋近1。&lt;/p&gt;
-&lt;p&gt;在简单的单层CNN算法的实验上效果并不是很好，确实得到了多输出的结果，但是出现了某个类概率接近1，另一个所属类概率虽然也比较突出但数值偏小，比如0.5左右的样子，同时属于3个或4个类效果就更差些，可以通过修改阈值比如threshold=0.3，大于0.3就算做该类，但改善不明显。应该和数据集不同类对应存在的样本不同有关。&lt;/p&gt;</description></item><item><title>卷积神经网络(CNN)理论与实现</title><link>https://www.xiaoxiangtao.cn/zh/posts/theory-and-implementation-of-convolutional-neural-network/</link><pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/theory-and-implementation-of-convolutional-neural-network/</guid><description>&lt;h2 id="一理论"&gt;一、理论&lt;/h2&gt;
+&lt;p&gt;在简单的单层CNN算法的实验上效果并不是很好，确实得到了多输出的结果，但是出现了某个类概率接近1，另一个所属类概率虽然也比较突出但数值偏小，比如0.5左右的样子，同时属于3个或4个类效果就更差些，可以通过修改阈值比如threshold=0.3，大于0.3就算做该类，但改善不明显。应该和数据集不同类对应存在的样本不同有关。&lt;/p&gt;</description></item><item><title>Natural Language Processing相关概念理解</title><link>https://www.xiaoxiangtao.cn/zh/posts/understanding-of-related-concepts-of-natural-language/</link><pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/understanding-of-related-concepts-of-natural-language/</guid><description>&lt;h2 id="nlp一般流程"&gt;NLP一般流程&lt;/h2&gt;
+&lt;p&gt;文本预处理-&amp;gt;词向量与文本表示-&amp;gt;特征选择与特征抽取-&amp;gt;分类算法&lt;/p&gt;
+&lt;h2 id="词向量与文本表示"&gt;词向量与文本表示&lt;/h2&gt;
+&lt;h3 id="词袋模型bow"&gt;词袋模型（BOW）&lt;/h3&gt;
+&lt;p&gt;将所有词汇放进一个袋子里，假设有n个词，则每个句子表示为一个长度为n的词频向量，词频即对应词在句子里出现的次数，如果没有出现就是0。这种方法句子里的语义信息被完全遗失了。&lt;/p&gt;
+&lt;h3 id="word-based-encodings"&gt;word based encodings&lt;/h3&gt;
+&lt;p&gt;另一种思路是表示句子，这样就可以把词在句子中的位置关系考虑进去，例如 “我 喜欢 猫”和 “我 喜欢 狗”分别表示为（0 1 2）和（0 1 3），这里的数字不再是词频，而是对应单词被分配的编码，如果词重复了，显然在数组中对应的数字也会重复。&lt;/p&gt;
+&lt;h3 id="padding"&gt;padding&lt;/h3&gt;
+&lt;p&gt;句子长度不同时，需要将他们转化为统一长度的向量输入到神经网络中训练，这时就要padding，设置一个长度n，如果句子长度小于n，就在数组左侧或右侧填充0，如果句子长了，就把左侧或右侧多余的部分忽略，具体方位由自己选择。&lt;/p&gt;
+&lt;h3 id="词向量模型word-embedding"&gt;词向量模型（word embedding）&lt;/h3&gt;
+&lt;p&gt;考虑词与词之间的位置关系。原本用随机分配的数字代表每一个词，词与词之间是完全独立的，而embedding使得每一个词成为了一个n维空间中的向量，如果两个词的含义相近，那么相应的向量距离也就进，这样就考虑到了词的含义。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;word2Vec ：&lt;/strong&gt; 底层采用基于CBOW和Skip-Gram算法的神经网络模型。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CBOW模型：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;CBOW模型的训练输入是某一个特征词的上下文相关的词对应的词向量，而输出就是这特定的一个词的词向量。由于CBOW使用的是词袋模型，因此上下文的几个词都是平等的，也就是不考虑他们和我们关注的词之间的距离大小，只要在我们上下文之内即可。&lt;/p&gt;
+&lt;p&gt;这样我们这个CBOW的例子里，我们的输入是上下文选定的词向量，输出是所有词的softmax概率（训练的目标是期望训练样本特定词对应的softmax概率最大），对应的CBOW神经网络模型输入层有4个神经元，输出层有词汇表大小个神经元。隐藏层的神经元个数我们可以自己指定。通过DNN的反向传播算法，我们可以求出DNN模型的参数，同时得到所有的词对应的词向量。这样当我们有新的需求，要求出某4个词对应的最可能的输出中心词时，我们可以通过一次DNN前向传播算法并通过softmax激活函数找到概率最大的词对应的神经元即可。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Skip-Gram模型：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Skip-Gram模型和CBOW的思路是反着来的，即输入是特定的一个词的词向量，而输出是特定词对应的上下文词向量。&lt;/p&gt;
+&lt;p&gt;这样我们这个Skip-Gram的例子里，我们的输入是特定词， 输出是softmax概率排前几的词，对应的Skip-Gram神经网络模型输入层有1个神经元，输出层有词汇表大小个神经元。隐藏层的神经元个数我们可以自己指定。通过DNN的反向传播算法，我们可以求出DNN模型的参数，同时得到所有的词对应的词向量。这样当我们有新的需求，要求出某1个词对应的最可能的4个上下文词时，我们可以通过一次DNN前向传播算法得到概率大小排前4的softmax概率对应的神经元所对应的词即可。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;词向量模型突出特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在词向量模型中，词向量与词向量之间有这非常特殊的特性。例如现在存在国王、男生、女人、皇后四个词向量，那么一个完善的词向量模型，就存在“国王-男人+女人=皇后”这样的关系。&lt;/p&gt;
+&lt;p&gt;参考： &lt;a href="//www.cnblogs.com/chenyusheng0803/p/10978883.html"&gt;词袋模型（BOW，bag of words）和词向量模型（Word Embedding）概念介绍&lt;/a&gt;&lt;/p&gt;</description></item><item><title>卷积神经网络(CNN)理论与实现</title><link>https://www.xiaoxiangtao.cn/zh/posts/theory-and-implementation-of-convolutional-neural-network/</link><pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate><author>15989119660@163.com (Xiangtao XIAO)</author><guid isPermaLink="false">https://www.xiaoxiangtao.cn/zh/posts/theory-and-implementation-of-convolutional-neural-network/</guid><description>&lt;h2 id="一理论"&gt;一、理论&lt;/h2&gt;
 &lt;p&gt;卷积神经网络结构：（卷积层+（可选）池化层）*N+全连接层*M（M&amp;gt;=0），卷积层的输入输出是矩阵，全连接层输入输出是向量，在卷积层的最后一层做一个展平。&lt;/p&gt;
 &lt;p&gt;主要用于分类任务&lt;/p&gt;
 &lt;p&gt;全卷积神经网络：（卷积层+（可选）池化层）*N+反卷积层*K，可以做物体分割类任务&lt;/p&gt;
